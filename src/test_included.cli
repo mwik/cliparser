@@ -1,0 +1,42 @@
+// This .cli file is included in test.cli
+
+// When users enter "employee <xyz>", it enters employee sub-mode.
+// In this sub-mode, all commands are attributes of employee <xyz>.
+// Essentially, we enter an employee's record.
+
+#submode "emp"
+
+// Exit employee submode
+exit
+
+// Name
+name <STRING:name>
+
+// Date of birth
+date-of-birth <INT:month> <INT:day> <INT:year>
+
+// Height in inches
+height <UINT:inches>
+
+// Weight in lbs
+weight <UINT:lbs>
+
+// Scaling factor for bonus
+bonus-factor <FLOAT:scale>
+
+// Employee's PC IP address
+pc-ip-address <IPV4ADDR:ipv4>
+
+// Employee's PC MAC address
+pc-mac-address <MACADDR:addr>
+
+// Title
+title <STRING:title>
+
+// Security passcode
+passcode <HEX64:passcode>
+
+// List all available commands with a substring 'filter' in it.
+help { <STRING:filter> }
+
+#endsubmode

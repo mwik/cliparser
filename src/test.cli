@@ -1,0 +1,54 @@
+// This is the CLI syntax file of a test/sample program that handles
+// an employee roster of a company.
+
+
+// This line tests if comments are handled correctly
+
+// List a summary of employees.
+show employees
+
+// List detail records of all employees.
+show employees all
+
+// List all employees within a certain range of employee ids
+show employees-by-id { <UINT:min> { <UINT:max> } }
+
+// Add a new employee or enter the record of an existing employee
+employee <HEX:id>
+
+#ifdef TEST_LABEL1
+// This next line tests if file inclusion is handled correctly.
+#include "test_included.cli"
+#endif
+
+#ifdef TEST_LABEL2
+// This next line tests if not existing label is handled correctly.
+#include "test_not_included.cli"
+#endif
+
+// Delete an existing employee
+no employee <HEX:id>
+
+// Save the current roster to a file
+save roster <STRING:filename>
+
+// Load roster file
+load roster <FILE:filename>
+
+// List all available commands with a substring 'filter' in it.
+help { <STRING:filter> }
+
+// Show specific field of an employee.
+show employee <HEX:id> <LIST:height,weight,date-of-birth,title:field>
+
+// Show the bonus factor of an employee.
++ show employee <HEX:id> bonus-factor
+
+// Enable privileged mode
+enable privileged-mode
+
+// Disable privileged mode
++ disable privileged-mode
+
+// Leave the database
+quit
