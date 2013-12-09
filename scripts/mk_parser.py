@@ -759,6 +759,7 @@ def main():
     out_dir = '.'
     c_fname = 'cparser_tree.c'
     h_fname = 'cparser_tree.h'
+    cplusplus = False
     # Parse input arguments
     sys.argv.pop(0) # remove mk_parser.py itself
     while (len(sys.argv) > 0):
@@ -776,6 +777,8 @@ def main():
             c_fname = sys.argv.pop(0)
         elif '-i' == item:
             h_fname = sys.argv.pop(0)
+        elif '-p' == item:
+            cplusplus = True
         else:
             filelist.append(item)
 
@@ -824,11 +827,16 @@ def main():
                'extern "C" {\n' +
                '#endif /* __cplusplus */\n\n' +
                'extern cparser_node_t cparser_root;\n\n')
-    root.walk(lambda n,f: f.write(n.action_fn()), 'func', fout)
-    fout.write('\n#ifdef __cplusplus\n' +
+    if(cplusplus):
+        fout.write('\n#ifdef __cplusplus\n' +
                '}\n' +
-               '#endif /* __cplusplus */\n' +
-               '\n#endif /* __CPARSER_TREE_H__ */\n')
+               '#endif /* __cplusplus */\n')
+    root.walk(lambda n,f: f.write(n.action_fn()), 'func', fout)
+    if(not cplusplus):
+        fout.write('\n#ifdef __cplusplus\n' +
+               '}\n' +
+               '#endif /* __cplusplus */\n')
+    fout.write('\n#endif /* __CPARSER_TREE_H__ */\n')
     fout.close()
 
     # Print out a summary

@@ -33,6 +33,10 @@
 #ifndef __CPARSER_TOKEN_H__
 #define __CPARSER_TOKEN_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 #define CPARSER_MAX_NODE_TYPES (16)
 
 /**
@@ -169,5 +173,9 @@ cparser_result_t cparser_get_macaddr(const cparser_token_t *token, void *value);
 cparser_result_t cparser_get_ipv4addr(const cparser_token_t *token, void *value);
 cparser_result_t cparser_get_file(const cparser_token_t *token, void *value);
 cparser_result_t cparser_get_list(const cparser_token_t *token, void *value);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* __CPARSER_MATCH_H__ */
