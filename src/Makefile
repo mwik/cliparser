@@ -28,7 +28,7 @@
 
 SRC_BASE = ..
 SRC_FILES = cparser.c cparser_token.c cparser_token_tbl.c cparser_io_unix.c \
-	    cparser_fsm.c cparser_line.c
+	    cparser_fsm.c cparser_line.c cparser_io_ncurses.c
 SRC_MOD = cparser.a
 
 local_clean:

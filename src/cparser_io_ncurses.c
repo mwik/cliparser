@@ -32,6 +32,7 @@
 
 #include <assert.h>
 #include <ctype.h>
+#include <ncurses.h>
 #include <stdio.h>
 #include <termios.h>
 #include <unistd.h>
@@ -45,46 +46,16 @@
 #define CTRL_N (14)
 #define CTRL_P (16)
 
-/**
- * \brief    Enable/disable canonical mode.
- * \details  Note that this call must be made first with enable=0.
- *
- * \param    parser Pointer to the parser.
- * \param    enable 1 to enable; 0 to disable.
- */
 static void
-cparser_term_set_canonical (cparser_t *parser, int enable)
-{
-    static struct termios old_term;
-    static int old_term_set = 0;
-    struct termios new_term;
-
-    if (!VALID_PARSER(parser)) return;
-
-    if (enable) {
-        assert(old_term_set);
-        tcsetattr(STDIN_FILENO, TCSANOW, &old_term);
-        old_term_set = 0;
-    } else {
-        assert(0 == STDIN_FILENO);
-        tcgetattr(STDIN_FILENO, &old_term);
-        new_term = old_term;
-        new_term.c_lflag &= ~(ICANON | ECHO);
-        tcsetattr(STDIN_FILENO, TCSANOW, &new_term);
-        old_term_set = 1;
-    }
-}
-
-static void
-cparser_unix_getch (cparser_t *parser, int *ch, cparser_char_t *type)
+cparser_ncurses_getch (cparser_t *parser, int *ch, cparser_char_t *type)
 {
     assert(VALID_PARSER(parser) && ch && type);
     *type = CPARSER_CHAR_UNKNOWN;
-    *ch = getchar();
+    *ch = wgetch(parser->cfg.win);
     if ('' == *ch) {
-        *ch = getchar();
+        *ch = wgetch(parser->cfg.win);
         if ('[' == *ch) {
-            *ch = getchar();
+            *ch = wgetch(parser->cfg.win);
             switch (*ch) {
                 case 'A':
                     *type = CPARSER_CHAR_UP_ARROW;
@@ -121,44 +92,42 @@ cparser_unix_getch (cparser_t *parser, int *ch, cparser_char_t *type)
 }
 
 static void
-cparser_unix_printc (const cparser_t *parser, const char ch)
+cparser_ncurses_printc (const cparser_t *parser, const char ch)
 {
-    ssize_t wsize;
-    assert(parser);
-    wsize = write(parser->cfg.fd, &ch, 1);
-    assert((0 <= wsize) || (-1 == parser->cfg.fd));
+    assert(parser && parser->cfg.win);
+    wechochar(parser->cfg.win, ch);
 }
 
 static void
-cparser_unix_prints (const cparser_t *parser, const char *s)
+cparser_ncurses_prints (const cparser_t *parser, const char *s)
 {
-    ssize_t wsize;
     assert(parser);
     if (s) {
-        wsize = write(parser->cfg.fd, s, strlen(s));
-        assert((0 <= wsize) || (-1 == parser->cfg.fd));
+       waddstr(parser->cfg.win, s);
+       wrefresh(parser->cfg.win);
     }
 }
 
 static void 
-cparser_unix_io_init (cparser_t *parser)
+cparser_ncurses_io_init (cparser_t *parser)
 {
-    cparser_term_set_canonical(parser, 0);
+
 }
 
 static void
-cparser_unix_io_cleanup (cparser_t *parser)
+cparser_ncurses_io_cleanup (cparser_t *parser)
 {
-    cparser_term_set_canonical(parser, 1);
+
 }
 
 void
-cparser_io_config (cparser_t *parser)
+cparser_io_ncurses_config (cparser_t *parser, WINDOW *win)
 {
     assert(parser);
-    parser->cfg.io_init    = cparser_unix_io_init;
-    parser->cfg.io_cleanup = cparser_unix_io_cleanup;
-    parser->cfg.cparser_getch      = cparser_unix_getch;
-    parser->cfg.printc     = cparser_unix_printc;
-    parser->cfg.prints     = cparser_unix_prints;
+    parser->cfg.io_init    = cparser_ncurses_io_init;
+    parser->cfg.io_cleanup = cparser_ncurses_io_cleanup;
+    parser->cfg.cparser_getch      = cparser_ncurses_getch;
+    parser->cfg.printc     = cparser_ncurses_printc;
+    parser->cfg.prints     = cparser_ncurses_prints;
+    parser->cfg.win        = win;
 }

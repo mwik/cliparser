@@ -646,7 +646,7 @@ cparser_run (cparser_t *parser)
     parser->done = 0;
 
     while (!parser->done) {
-        parser->cfg.getch(parser, &ch, &ch_type);
+        parser->cfg.cparser_getch(parser, &ch, &ch_type);
         cparser_input(parser, ch, ch_type);
     } /* while not done */
 

@@ -675,6 +675,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
+#include <ncurses.h>
 #include "cparser_options.h"
 
 /*
@@ -757,12 +758,13 @@ typedef struct cparser_cfg_ {
     char            ch_help;
     char            prompt[CPARSER_MAX_PROMPT];
     int             fd;
+    WINDOW          *win;
     unsigned long   flags;
 
     /* I/O API */
     cparser_io_init_fn     io_init;
     cparser_io_cleanup_fn  io_cleanup;
-    cparser_getch_fn       getch;
+    cparser_getch_fn       cparser_getch;
     cparser_printc_fn      printc;
     cparser_prints_fn      prints;
 } cparser_cfg_t;
@@ -832,7 +834,7 @@ struct cparser_ {
     short             cur_line;
     cparser_line_t    lines[CPARSER_MAX_LINES];
 
-    /** Flag indicating if the parser should continue to except input */
+    /** Flag indicating if the parser should continue to accept input */
     int               done;   
     /** Context passed back to action function */ 
     cparser_context_t context;
