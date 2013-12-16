@@ -60,6 +60,14 @@ typedef enum {
 void cparser_io_config(cparser_t *parser);
 
 /**
+ * Configure all I/O functions to use NCURSES.
+ *
+ * \param    parser Pointer to the parser structure.
+ * \param    win Pointer to NCURSES window to use.
+ */
+void cparser_io_ncurses_config (cparser_t *parser, WINDOW *win);
+
+/**
  * Initialize I/O interface to the parser.
  *
  * \param    parser Pointer to the parser structure.
