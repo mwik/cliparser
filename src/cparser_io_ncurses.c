@@ -95,7 +95,10 @@ static void
 cparser_ncurses_printc (const cparser_t *parser, const char ch)
 {
     assert(parser && parser->cfg.win);
-    wechochar(parser->cfg.win, ch);
+    if (ch == '\a')
+       flash();
+    else
+       wechochar(parser->cfg.win, ch);
 }
 
 static void
