@@ -705,7 +705,7 @@ cparser_quit (cparser_t *parser)
 }
 
 cparser_result_t
-cparser_submode_enter (cparser_t *parser, void *cookie, char *prompt)
+cparser_submode_enter (cparser_t *parser, void *cookie, const char *prompt)
 {
     cparser_node_t *new_root;
 

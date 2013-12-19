@@ -980,7 +980,7 @@ cparser_result_t cparser_quit(cparser_t *parser);
  *           of submode already.
  */
 cparser_result_t cparser_submode_enter(cparser_t *parser, void *cookie, 
-                                       char *prompt);
+                                       const char *prompt);
 
 /**
  * \brief    Leave a submode. 
