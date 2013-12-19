@@ -877,6 +877,8 @@ typedef cparser_result_t (*cparser_token_fn)(char *token, int token_len,
 typedef cparser_result_t (*cparser_walker_fn)(cparser_t *parser, 
                                               cparser_node_t *node, void *cookie);
 
+void cparser_print_prompt (const cparser_t *parser);
+
 /**
  * \brief    Initialize a parser.
  *
