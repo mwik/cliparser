@@ -276,7 +276,7 @@ class Node:
             msg += '    ' + ' | '.join(self.flags) + ',\n'
         # param
         if 'ROOT' == self.type:  msg += '    NULL,\n'
-        elif 'END' == self.type: msg += '    %s,\n' % self.param
+        elif 'END' == self.type: msg += '    (const void *)%s,\n' % self.param
         elif 'KEYWORD' == self.type: msg += '    "%s",\n' % self.param
         elif 'LIST' == self.type:
             msg += '    &cparser_list_node%s_%s,\n' % (self.path, self.list_kw[0].replace('-', '_'))

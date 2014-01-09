@@ -399,7 +399,7 @@ cparser_complete_keyword (cparser_t *parser, const cparser_node_t *node,
                           const char *token, const int token_len)
 {
     int rc;
-    char *ch_ptr;
+    const char *ch_ptr;
 
     assert(parser && node && token && (CPARSER_NODE_KEYWORD == node->type));
     ch_ptr = node->param + token_len;
@@ -449,7 +449,7 @@ cparser_result_t
 cparser_complete_list (cparser_t *parser, const cparser_node_t *node,
                        const char *token, const int token_len)
 {
-    cparser_list_node_t *lnode, *match_lnode = NULL;
+    const cparser_list_node_t *lnode, *match_lnode = NULL;
     int match_len = -1, n;
     cparser_result_t rc = CPARSER_NOT_OK;
 

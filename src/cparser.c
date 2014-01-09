@@ -386,7 +386,7 @@ cparser_complete_one_level (cparser_t *parser)
     cparser_token_t *token;
     cparser_node_t *match;
     int is_complete = 0, num_matches, keep_going = 0, rc;
-    char *ch_ptr;
+    const char *ch_ptr;
 
     switch (parser->state) {
         case CPARSER_STATE_ERROR:
